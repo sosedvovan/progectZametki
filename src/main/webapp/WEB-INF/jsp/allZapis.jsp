@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<h3><a href="zametki">Home</a></h3>
+<h3><a href="index.html">Home</a></h3>
 <hr/>
 <h2>Заметки</h2>
 <a href="zametki?action=add"><img src="img/add.png"></a>
@@ -34,10 +34,12 @@
             <td>${zapis.description1}</td>
             <td>${zapis.description2}</td>
             <td><a href="zametki?id=${zapis.id}&action=edit"><img src="img/pencil.png"></a></td>
-            <td><a href="zametki?id=${zapis.id}&action=delete"><img src="img/pencil.png"></a></td>
+            <td><a href="zametki?id=${zapis.id}&action=delete"><img src="img/delete.png"></a></td>
         </tr>
         </c:forEach>
     </table>
+    <br>
+    <button onclick="window.history.back()">Назад</button>
 </section>
 </body>
 </html>
