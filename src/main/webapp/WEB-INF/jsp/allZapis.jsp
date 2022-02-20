@@ -3,25 +3,27 @@
 
 <html>
 <head>
-    <title>Meal list</title>
+    <title>Список всех заметок</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
+
 <body>
-<a href="zametki?action=add">Добавить заметку<img src="img/add.png"></a>
+<h3><a href="zametki">Home</a></h3>
+<hr/>
+<h2>Заметки</h2>
+<a href="zametki?action=add"><img src="img/add.png"></a>
 <section>
-    <h3><a href="zametki">Home</a></h3>
-    <hr/>
-    <h2>Заметки</h2>
-    <br><br>
+
+    <br>
     <table border="1" cellpadding="8" cellspacing="0" width="50%">
         <thead>
         <tr>
             <th>ID</th>
-            <th>dateTime</th>
-            <th>description1</th>
-            <th>description2</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Дата</th>
+            <th>Тема</th>
+            <th>Заметка</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <c:forEach items="${allZapis}" var="zapis">

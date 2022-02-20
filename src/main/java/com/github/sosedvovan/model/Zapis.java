@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 public class Zapis {
 
-    public static final Zapis EMPTY = new Zapis(1,"дата", "заметка 1", "заметка 2");
+    public static final Zapis EMPTY = new Zapis(1,"дата", "тема", "заметка");
 
     private Integer id;
 
@@ -26,6 +26,10 @@ public class Zapis {
 //        this.dateTime = dateTime;
 //        this.description1 = description1;
 //        this.description2 = description2;
+//    }
+
+//    public static void main(String[] args) {
+//        System.out.println(EMPTY.getDescription2());
 //    }
 
     public Integer getId() {
@@ -50,11 +54,6 @@ public class Zapis {
 
     @Override
     public String toString() {
-        return "Zapis{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", description1='" + description1 + '\'' +
-                ", description2='" + description2 + '\'' +
-                '}';
+        return "{" + id + '\'' +dateTime + '\'' + description1 + '\'' + description2  + '}';
     }
 }
