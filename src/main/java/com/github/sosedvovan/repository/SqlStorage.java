@@ -5,8 +5,11 @@ import com.github.sosedvovan.model.Zapis;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SqlStorage {
+
+    private AtomicInteger counter = new AtomicInteger(0);
 
     String dbUrl = "jdbc:postgresql://localhost:5432/zametki";
     String dbUser = "postgres";
