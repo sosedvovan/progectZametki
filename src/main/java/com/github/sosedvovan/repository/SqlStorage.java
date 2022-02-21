@@ -5,11 +5,12 @@ import com.github.sosedvovan.model.Zapis;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SqlStorage {
 
-    private AtomicInteger counter = new AtomicInteger(0);
+//    private AtomicInteger counter = new AtomicInteger(0);
 
     String dbUrl = "jdbc:postgresql://localhost:5432/zametki";
     String dbUser = "postgres";
@@ -19,7 +20,7 @@ public class SqlStorage {
 
     {
         try {
-            Class.forName("org.postgresql.Driver" );
+            Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -40,8 +41,9 @@ public class SqlStorage {
 //    }
     public void save(Zapis z) {
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-             PreparedStatement ps = connection.prepareStatement("INSERT INTO zametki (id, datetime, description1, description2) VALUES (?,?,?,?)" )) {
-            ps.setInt(1, z.getId());
+             PreparedStatement ps = connection.prepareStatement("INSERT INTO zametki (id, datetime, description1, description2) VALUES (?,?,?,?)")) {
+            int id = getAndIncrement();
+            ps.setInt(1, id);
             ps.setString(2, z.getDateTime());
             ps.setString(3, z.getDescription1());
             ps.setString(4, z.getDescription2());
@@ -51,15 +53,36 @@ public class SqlStorage {
         }
     }
 
+    private int getAndIncrement() {
+        int counter = 0;
+        try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+             PreparedStatement psMaxCounter = connection.prepareStatement("SELECT MAX(id) as max FROM zametki")) {
+            ResultSet rs = psMaxCounter.executeQuery();
+            rs.next();
+//            String maxcounter = rs.getString(1);
+            Optional<String> optional = Optional.ofNullable(rs.getString(1));
+            if (optional.isPresent()) {
+                counter = (Integer.parseInt(optional.get())) + 1;
+            }else counter = 1;
+//            System.out.println(maxcounter);
+//            counter = maxcounter.equals(null) ? 1 : Integer.parseInt(maxcounter);
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return counter;
+    }
+
 
     public List<Zapis> getAll() {
         List<Zapis> allZapis = new LinkedList<>();
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-             PreparedStatement ps = connection.prepareStatement("SELECT * FROM zametki ORDER BY id" )) {
+             PreparedStatement ps = connection.prepareStatement("SELECT * FROM zametki ORDER BY id")) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Zapis z = new Zapis(rs.getInt("id" ), rs.getString("dateTime" ),
-                        rs.getString("description1" ), rs.getString("description2" ));
+                Zapis z = new Zapis(rs.getInt("id"), rs.getString("dateTime"),
+                        rs.getString("description1"), rs.getString("description2"));
                 allZapis.add(z);
             }
 
@@ -75,7 +98,7 @@ public class SqlStorage {
 
     public void delete(Integer id) {
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-             PreparedStatement ps = connection.prepareStatement("DELETE FROM zametki WHERE id=?" )) {
+             PreparedStatement ps = connection.prepareStatement("DELETE FROM zametki WHERE id=?")) {
             ps.setInt(1, id);
             ps.execute();
         } catch (SQLException throwables) {
@@ -86,7 +109,7 @@ public class SqlStorage {
     public void update(Zapis newZ) {
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
              PreparedStatement ps = connection.prepareStatement(
-                     "UPDATE zametki SET id=?, dateTime = ?, description1=?, description2=? WHERE id = ?" )) {
+                     "UPDATE zametki SET id=?, dateTime = ?, description1=?, description2=? WHERE id = ?")) {
             ps.setInt(1, newZ.getId());
             ps.setString(2, newZ.getDateTime());
             ps.setString(3, newZ.getDescription1());
@@ -101,12 +124,12 @@ public class SqlStorage {
     public Zapis get(String id) {
         Zapis z = Zapis.EMPTY;
         try (Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-             PreparedStatement ps = connection.prepareStatement("SELECT * FROM zametki WHERE id =?" )) {
+             PreparedStatement ps = connection.prepareStatement("SELECT * FROM zametki WHERE id =?")) {
             ps.setInt(1, Integer.parseInt(id));
             ResultSet rs = ps.executeQuery();
             rs.next();
-             z = new Zapis(rs.getInt("id" ), rs.getString("dateTime" ),
-                        rs.getString("description1" ), rs.getString("description2" ));
+            z = new Zapis(rs.getInt("id"), rs.getString("dateTime"),
+                    rs.getString("description1"), rs.getString("description2"));
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

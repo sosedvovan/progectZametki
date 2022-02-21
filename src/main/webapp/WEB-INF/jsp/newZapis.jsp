@@ -10,13 +10,15 @@
 </head>
 <body>
 <section>
+    <h2>Добавление новой заметки</h2>
     <form method="post" action="zametki" enctype="application/x-www-form-urlencoded">
         <jsp:useBean id="emptyZapis" type="com.github.sosedvovan.model.Zapis" scope="request"/>
         <input type="hidden" name="actionoutpost" value="add">
-        <dl>
-            <dt>Номер записи:</dt>
-            <dd><input type="text" value="${emptyZapis.id}" name="id"></dd>
-        </dl>
+<%--        <dl>--%>
+<%--            <dt>Номер записи:</dt>--%>
+<%--            <dd><input type="text" value="${emptyZapis.id}" name="id"></dd>--%>
+<%--        </dl>--%>
+        <input type="hidden" value="${emptyZapis.id}" name="id">
         <dl>
             <dt>Дата-время:</dt>
             <dd><input type="text" value="${emptyZapis.dateTime}" name="dateTime"></dd>

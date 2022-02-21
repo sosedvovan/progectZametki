@@ -12,13 +12,15 @@
     <form method="post" action="zametki" enctype="application/x-www-form-urlencoded">
         <jsp:useBean id="oldZ" type="com.github.sosedvovan.model.Zapis" scope="request"/>
         <input type="hidden" name="actionoutpost" value="edit">
-        <h2>Редактирование заметки</h2>
-        <br>
-        <dl>
-            <dt>Номер записи:</dt>
-            <dd><input type="text" value="${oldZ.id}" name="id"></dd>
-        </dl>
-        <dl>
+        <h2>Редактирование заметки # <%=oldZ.getId()%></h2>
+<%--        <br>--%>
+<%--        <dl>--%>
+<%--            <dt>Номер записи:</dt>--%>
+<%--            <dd><input type="text" value="${oldZ.id}" name="id"></dd>--%>
+<%--        </dl>--%>
+<%--        <dl>--%>
+        <input type="hidden" value="${oldZ.id}" name="id">
+
             <dt>Дата-время:</dt>
             <dd><input type="text" value="${oldZ.dateTime}" name="dateTime"></dd>
         </dl>
